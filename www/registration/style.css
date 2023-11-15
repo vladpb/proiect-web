@@ -9,10 +9,13 @@
 body {
     font-size: 18px;
     line-height: 1.6;
-    color: #333;
     margin: 0;
+    height: 99vh;
+    width: 100%;
+    min-height: 100%;
     background: linear-gradient(45deg, #49a09d, #5f2c82);
 }
+
 
 .header, form, .content, table {
     width: 70%;
@@ -77,4 +80,49 @@ body {
     border: 1px solid #c3e6cb;
     border-radius: 5px;
     padding: 15px;
+}
+
+.header {
+    width: 70%;
+    padding: 20px 0;
+    background-color: #2C3E50;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.header a {
+    color: #ffffff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.header a:hover {
+    color: #49a09d;
+}
+
+.events {
+    margin: 0% 0% 0% 15%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.event {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.event h2 {
+    margin-top: 0;
+}
+
+.event p {
+    margin-bottom: 0;
 }

@@ -1,5 +1,6 @@
 <?php
 include('server.php');
+include('header.php');
 
 // Check if user is logged in and if user is an admin
 if (isset($_SESSION['username']) && isset($_SESSION['esteAdministrator']) && $_SESSION['esteAdministrator']) {

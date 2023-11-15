@@ -1,5 +1,7 @@
 <?php
+global $db;
 include('server.php');
+include('header.php');
 
 if (!isset($_SESSION['username']) || $_SESSION['esteAdministrator'] != 1) {
     $_SESSION['msg'] = "Trebuie sa fii logat ca administator";
@@ -74,6 +76,7 @@ $events = mysqli_query($db, $query);
             <td><?php echo $event['ora']; ?></td>
             <td><?php echo $event['locatie']; ?></td>
             <td><a href="edit_event.php?id=<?php echo $event['id']; ?>">Edit</a></td>
+            <td><a href="delete_event.php?id=<?php echo $event['id']; ?>">Sterge</a></td>
         </tr>
     <?php endwhile; ?>
     </tbody>

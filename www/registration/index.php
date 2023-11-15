@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('header.php');
 
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
@@ -12,7 +13,7 @@ if (isset($_GET['logout'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="style.css">

@@ -21,11 +21,11 @@ if (isset($_POST['reg_user'])) {
     $password_1 = mysqli_real_escape_string($db, $_POST['password_1']);
     $password_2 = mysqli_real_escape_string($db, $_POST['password_2']);
 
-    if (empty($username)) { array_push($errors, "Username is required"); }
-    if (empty($email)) { array_push($errors, "Email is required"); }
-    if (empty($password_1)) { array_push($errors, "Password is required"); }
+    if (empty($username)) { array_push($errors, "Username-ul este obligatoriu"); }
+    if (empty($email)) { array_push($errors, "Email-ul este obligatoriu"); }
+    if (empty($password_1)) { array_push($errors, "Parola este obligatorie"); }
     if ($password_1 != $password_2) {
-        array_push($errors, "The two passwords do not match");
+        array_push($errors, "Parolele nu se potrivesc");
     }
 
     if (count($errors) == 0) {
@@ -33,7 +33,7 @@ if (isset($_POST['reg_user'])) {
         $query = "INSERT INTO utilizatori (username, email, parola) VALUES('$username', '$email', '$password')";
         if (mysqli_query($db, $query)) {
             $_SESSION['username'] = $username;
-            $_SESSION['success'] = "You are now logged in";
+            $_SESSION['success'] = "Esti logat";
             header('location: index.php');
         } else {
             printf("Error: %s\n", mysqli_error($db));
@@ -62,14 +62,14 @@ if (isset($_POST['login_user'])) {
             $_SESSION['esteAdministrator'] = $user['esteAdministrator'];
 
             if ($user['esteAdministrator'] == 1) {
-                $_SESSION['success'] = "You are now logged in as admin";
+                $_SESSION['success'] = "Esti logat ca administrator";
                 header('location: admin_panel.php');
             } else {
                 $_SESSION['success'] = "You are now logged in";
                 header('location: index.php');
             }
         } else {
-            array_push($errors, "Wrong username/password combination");
+            array_push($errors, "Combinatie username/parola gresita");
         }
     }
 }
