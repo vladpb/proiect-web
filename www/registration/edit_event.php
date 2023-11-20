@@ -27,9 +27,12 @@ if (isset($_POST['update_event'])) {
     $data = mysqli_real_escape_string($db, $_POST['data']);
     $ora = mysqli_real_escape_string($db, $_POST['ora']);
     $locatie = mysqli_real_escape_string($db, $_POST['locatie']);
+    $contact = mysqli_real_escape_string($db, $_POST['mail']);
+    $speaker_id = mysqli_real_escape_string($db, $_POST['speaker_id']);
+    $pret_bilet = mysqli_real_escape_string($db, $_POST['pret_bilet']);
 
-    // Update în baza de date
-    $query = "UPDATE evenimente SET titlu='$titlu', descriere='$descriere', data='$data', ora='$ora', locatie='$locatie' WHERE id='$id'";
+    // Update în baza de date, incluzând și speakerul și contactul
+    $query = "UPDATE evenimente SET titlu='$titlu', descriere='$descriere', data='$data', ora='$ora', locatie='$locatie', mail='$contact', speaker_id='$speaker_id', pret_bilet='$pret_bilet' WHERE id='$id'";
     mysqli_query($db, $query);
     $_SESSION['success'] = "Eveniment actualizat cu succes!";
     header('location: admin_panel.php');
@@ -72,6 +75,45 @@ if (isset($_POST['update_event'])) {
         <label>Locație:</label>
         <input type="text" name="locatie" value="<?php echo $event['locatie']; ?>">
     </div>
+    <div class="input-group">
+        <label>Contact:</label>
+        <input type="email" name="mail" value="<?php echo $event['mail']; ?>">
+    </div>
+    <div class="input-group">
+        <label>Speaker:</label>
+        <select name="speaker_id" required>
+            <?php
+            // Obțineți lista de speakeri din baza de date
+            $speakerQuery = "SELECT id, nume FROM speakeri";
+            $speakerResult = mysqli_query($db, $speakerQuery);
+
+            // Afiseaza fiecare speaker ca o opțiune în meniul derulant
+            while ($speaker = mysqli_fetch_assoc($speakerResult)) {
+                // Verificați dacă acesta este speakerul curent pentru eveniment
+                $selected = ($speaker['id'] == $event['speaker_id']) ? "selected" : "";
+                echo "<option value='" . $speaker['id'] . "' $selected>" . $speaker['nume'] . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+    <div class="input-group">
+        <label>Parteneri:</label>
+        <select name="parteneri[]" multiple>
+            <?php
+            // Obține lista de parteneri din baza de date
+            $queryParteneri = "SELECT * FROM parteneri";
+            $resultParteneri = mysqli_query($db, $queryParteneri);
+
+            // Afisează opțiunile pentru selecție multiplă
+            while ($partener = mysqli_fetch_assoc($resultParteneri)) {
+                echo '<option value="' . $partener['id'] . '">' . $partener['nume'] . '</option>';
+            }
+            ?>
+        </select>
+    </div>
+    <label>Preț Bilet:</label>
+    <input type="number" step="0.01" name="pret_bilet" required><br>
+
     <div class="input-group">
         <button type="submit" class="btn" name="update_event">Salvează modificările</button>
     </div>
