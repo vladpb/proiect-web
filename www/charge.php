@@ -1,11 +1,20 @@
+<?php
 require_once('vendor/autoload.php');
 
-\Stripe\Stripe::setApiKey('pk_test_51HSHEDHXupmPYY82tB7pMN7BJirx3u2HT5oWXoXjs5FgaMO6Xmzld3pqe8Mkts06Y7SyWlcpeVKmwWhcu26OTVlo001bth8MH3');
+\Stripe\Stripe::setApiKey('sk_test_51HSHEDHXupmPYY82UXsYpVAFFTKwqMi2xjB6x3bGxn6qRzozmuWIFmjxi8maQdQBm5EZasuHLVbkc1E6sZS0GpQg00UBdJngFR');
 
-$token = $_POST['stripeToken'];
-$charge = \Stripe\Charge::create([
-    'amount' => $_POST['amount'],
-    'currency' => 'usd',
-    'description' => 'Bilet pentru eveniment',
-    'source' => $token,
-]);
+try {
+    $token = $_POST['stripeToken'];
+    $charge = \Stripe\Charge::create([
+        'amount' => $_POST['amount'],
+        'currency' => 'usd',
+        'description' => 'Bilet pentru eveniment',
+        'source' => $token,
+    ]);
+} catch (\Stripe\Exception\ApiErrorException $e) {
+
+    echo "Error: " . $e->getMessage();
+}
+if ($charge) {
+    header('Location: confirmation.php');
+}

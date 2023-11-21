@@ -1,42 +1,33 @@
 <?php
 session_start();
-// Verificăm dacă utilizatorul este autentificat și are rol de admin
 if (!isset($_SESSION['username']) || $_SESSION['esteAdministrator'] != 1) {
     $_SESSION['msg'] = "Trebuie să te loghezi ca admin pentru a vedea această pagină";
     header('location: login.php');
     exit;
 }
 
-// Conectare la baza de date
 $db = mysqli_connect('localhost', 'root', '', 'events');
 
-// Inițializăm variabila $speaker pentru a evita eroarea
 $speaker = array('nume' => '', 'descriere' => '');
 
-// Verificăm dacă ID-ul speakerului este în URL
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    // Selectăm datele speakerului din baza de date
     $query = "SELECT * FROM speakeri WHERE id='$id'";
     $result = mysqli_query($db, $query);
 
-    // Verificăm dacă există date pentru speaker
     if ($result && mysqli_num_rows($result) > 0) {
         $speaker = mysqli_fetch_assoc($result);
     } else {
-        // Dacă nu există date pentru speaker, poți redirecționa utilizatorul sau lua alte măsuri
         header('location: admin_panel.php');
         exit;
     }
 }
 
-// Procesăm formularul de actualizare
 if (isset($_POST['update_speaker'])) {
     $id = mysqli_real_escape_string($db, $_POST['id']);
     $nume = mysqli_real_escape_string($db, $_POST['nume']);
     $descriere = mysqli_real_escape_string($db, $_POST['descriere']);
 
-    // Update în baza de date
     $query = "UPDATE speakeri SET nume='$nume', descriere='$descriere' WHERE id='$id'";
     mysqli_query($db, $query);
     $_SESSION['success'] = "Speaker actualizat cu succes!";

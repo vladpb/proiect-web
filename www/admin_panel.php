@@ -10,7 +10,6 @@ if (!isset($_SESSION['username']) || $_SESSION['esteAdministrator'] != 1) {
 }
 
 
-// Fetch data for display
 $events = mysqli_query($db, "SELECT * FROM evenimente");
 $speakeri = mysqli_query($db, "SELECT * FROM speakeri");
 $parteneri = mysqli_query($db, "SELECT * FROM parteneri");
@@ -127,11 +126,9 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <label>Speaker</label>
     <select name="speaker_id" required>
         <?php
-        // Obțineți lista de speakeri din baza de date
         $speakerQuery = "SELECT id, nume FROM speakeri";
         $speakerResult = mysqli_query($db, $speakerQuery);
 
-        // Afiseaza fiecare speaker ca o opțiune în meniul derulant
         while ($speaker = mysqli_fetch_assoc($speakerResult)) {
             echo "<option value='" . $speaker['id'] . "'>" . htmlspecialchars($speaker['nume']) . "</option>";
         }
@@ -144,7 +141,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <button class="btn" style="width: 30%" type="submit" name="adauga_eveniment">Adaugă</button>
 </form>
 
-<!-- Tabel pentru speakeri -->
 <table>
     <h2 class="header">Speakeri</h2>
     <thead>
@@ -166,7 +162,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<!-- Formular pentru adăugarea speakerului -->
 <h2 class="header">Adaugă speaker</h2>
 <form method="post" action="admin_panel.php">
     <label>Nume:</label>
@@ -176,7 +171,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <button class="btn" style="width: 30%" type="submit" name="adauga_speaker">Adaugă</button>
 </form>
 
-<!-- Tabel pentru parteneri -->
 <table>
     <h2 class="header">Parteneri</h2>
     <thead>
@@ -198,7 +192,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<!-- Formular pentru adăugarea partenerului -->
 <h2 class="header">Adaugă partener</h2>
 <form method="post" action="admin_panel.php">
 
@@ -211,7 +204,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <button class="btn" style="width: 30%" type="submit" name="adauga_partener">Adaugă</button>
 </form>
 
-<!-- Tabel pentru activitati -->
 <table>
     <h2 class="header">Activitati</h2>
     <thead>
@@ -252,7 +244,6 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<!-- Formular pentru adăugarea activității în cadrul unui eveniment existent -->
 <h2 class="header">Adaugă Activitate în Eveniment</h2>
 <form method="post" action="admin_panel.php">
 

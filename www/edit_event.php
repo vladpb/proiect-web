@@ -1,25 +1,20 @@
 <?php
 session_start();
-// Verificăm dacă utilizatorul este autentificat și are rol de admin
 if (!isset($_SESSION['username']) || $_SESSION['esteAdministrator'] != 1) {
     $_SESSION['msg'] = "Trebuie să te loghezi ca admin pentru a vedea această pagină";
     header('location: login.php');
     exit;
 }
 
-// Conectare la baza de date
 $db = mysqli_connect('localhost', 'root', '', 'events');
 
-// Verificăm dacă ID-ul evenimentului este în URL
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    // Selectăm datele evenimentului din baza de date
     $query = "SELECT * FROM evenimente WHERE id='$id'";
     $result = mysqli_query($db, $query);
     $event = mysqli_fetch_assoc($result);
 }
 
-// Procesăm formularul de actualizare
 if (isset($_POST['update_event'])) {
     $id = mysqli_real_escape_string($db, $_POST['id']);
     $titlu = mysqli_real_escape_string($db, $_POST['titlu']);
@@ -31,7 +26,6 @@ if (isset($_POST['update_event'])) {
     $speaker_id = mysqli_real_escape_string($db, $_POST['speaker_id']);
     $pret_bilet = mysqli_real_escape_string($db, $_POST['pret_bilet']);
 
-    // Update în baza de date, incluzând și speakerul și contactul
     $query = "UPDATE evenimente SET titlu='$titlu', descriere='$descriere', data='$data', ora='$ora', locatie='$locatie', mail='$contact', speaker_id='$speaker_id', pret_bilet='$pret_bilet' WHERE id='$id'";
     mysqli_query($db, $query);
     $_SESSION['success'] = "Eveniment actualizat cu succes!";
@@ -83,13 +77,10 @@ if (isset($_POST['update_event'])) {
         <label>Speaker:</label>
         <select name="speaker_id" required>
             <?php
-            // Obțineți lista de speakeri din baza de date
             $speakerQuery = "SELECT id, nume FROM speakeri";
             $speakerResult = mysqli_query($db, $speakerQuery);
 
-            // Afiseaza fiecare speaker ca o opțiune în meniul derulant
             while ($speaker = mysqli_fetch_assoc($speakerResult)) {
-                // Verificați dacă acesta este speakerul curent pentru eveniment
                 $selected = ($speaker['id'] == $event['speaker_id']) ? "selected" : "";
                 echo "<option value='" . $speaker['id'] . "' $selected>" . $speaker['nume'] . "</option>";
             }
@@ -100,11 +91,9 @@ if (isset($_POST['update_event'])) {
         <label>Parteneri:</label>
         <select name="parteneri[]" multiple>
             <?php
-            // Obține lista de parteneri din baza de date
             $queryParteneri = "SELECT * FROM parteneri";
             $resultParteneri = mysqli_query($db, $queryParteneri);
 
-            // Afisează opțiunile pentru selecție multiplă
             while ($partener = mysqli_fetch_assoc($resultParteneri)) {
                 echo '<option value="' . $partener['id'] . '">' . $partener['nume'] . '</option>';
             }

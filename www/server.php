@@ -2,19 +2,16 @@
 
 session_start();
 
-// initializing variables
 $username = "";
 $email = "";
 $errors = array();
 
-// connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'events');
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
 }
 
-// REGISTER USER
 if (isset($_POST['reg_user'])) {
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $email = mysqli_real_escape_string($db, $_POST['email']);
@@ -98,7 +95,6 @@ if (isset($_POST['adauga_eveniment'])) {
         mysqli_query($db, $query_insert_partener_eveniment);
     }
 
-    // Obține ID-ul de utilizator
     $queryUser = "SELECT id FROM utilizatori WHERE username='" . $_SESSION['username'] . "'";
     $resultUser = mysqli_query($db, $queryUser);
     if ($resultUser) {
@@ -109,7 +105,6 @@ if (isset($_POST['adauga_eveniment'])) {
         die("Error fetching user ID: " . mysqli_error($db));
     }
 
-    // introducere în baza de date
     $query = "INSERT INTO evenimente (titlu, descriere, data, ora, locatie, mail, creat_de, pret_bilet) VALUES ('$titlu', '$descriere', '$data', '$ora', '$locatie','$mail', '$userID', '$pret_bilet')";
     if (!mysqli_query($db, $query)) {
         die("Error inserting event: " . mysqli_error($db));
@@ -148,7 +143,6 @@ if (isset($_POST['adauga_activitate'])) {
     $ora_final_activitate = mysqli_real_escape_string($db, $_POST['ora_final_activitate']);
     $parteneri_activitate = isset($_POST['parteneri_activitate']) ? $_POST['parteneri_activitate'] : array();
 
-    // Verifică dacă evenimentul există
     $query_eveniment = "SELECT titlu FROM evenimente WHERE id = $eveniment_id";
     $result_eveniment = mysqli_query($db, $query_eveniment);
     $eveniment_info = mysqli_fetch_assoc($result_eveniment);
@@ -156,13 +150,11 @@ if (isset($_POST['adauga_activitate'])) {
     if ($eveniment_info) {
         $titlu_eveniment = $eveniment_info['titlu'];
 
-        // Inserează activitatea în baza de date
         $query_insert_activitate = "INSERT INTO agenda (titlu_activitate, descriere, ora_start, ora_final, eveniment_id) 
                                     VALUES ('$titlu_eveniment', '$descriere_activitate', '$ora_start_activitate', '$ora_final_activitate', $eveniment_id)";
         mysqli_query($db, $query_insert_activitate);
         $activitate_id = mysqli_insert_id($db); // ID-ul activității recent adăugate
 
-        // Adaugă partenerii asociați activității în tabela parteneri_activitati
         foreach ($parteneri_activitate as $partener_id) {
             $query_insert_partener_activitate = "INSERT INTO parteneri_activitati (partener_id, activitate_id) 
                                                   VALUES ('$partener_id', '$activitate_id')";
@@ -183,12 +175,11 @@ if (isset($_POST['adauga_partener_la_activitate'])) {
     $parteneri_selectati = isset($_POST['parteneri_activitate']) ? $_POST['parteneri_activitate'] : array();
 
     foreach ($parteneri_selectati as $partener_id) {
-        // Verifică dacă asocierea deja există
+
         $query_check_association = "SELECT * FROM parteneri_activitati WHERE activitate_id = $activitate_id AND partener_id = $partener_id";
         $result_check_association = mysqli_query($db, $query_check_association);
 
         if (mysqli_num_rows($result_check_association) == 0) {
-            // Introducere în baza de date
             $query_insert_partener_activitate = "INSERT INTO parteneri_activitati (activitate_id, partener_id) VALUES ('$activitate_id', '$partener_id')";
             if (!mysqli_query($db, $query_insert_partener_activitate)) {
                 die("Error inserting partner to activity: " . mysqli_error($db));
@@ -201,3 +192,4 @@ if (isset($_POST['adauga_partener_la_activitate'])) {
     exit;
 }
 ?>
+

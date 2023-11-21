@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Actualizează cantitatea
 if (isset($_POST['update']) && isset($_POST['ticket_id']) && isset($_POST['quantity'])) {
     $ticketId = $_POST['ticket_id'];
     $quantity = intval($_POST['quantity']);
@@ -11,7 +10,7 @@ if (isset($_POST['update']) && isset($_POST['ticket_id']) && isset($_POST['quant
             if ($quantity > 0) {
                 $_SESSION['cart'][$key]['quantity'] = $quantity;
             } else {
-                unset($_SESSION['cart'][$key]); // Eliminăm biletul dacă cantitatea este 0 sau mai mică
+                unset($_SESSION['cart'][$key]);
             }
             break;
         }

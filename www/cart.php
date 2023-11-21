@@ -2,15 +2,12 @@
 include('server.php');
 include('header.php');
 
-// Conectare la baza de date
 $db = mysqli_connect('localhost', 'root', '', 'events');
 
-// Inițializăm coșul în sesiune dacă nu există
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Adăugăm sau actualizăm biletul în coș
 if (isset($_POST['ticket_id'])) {
     $ticketId = $_POST['ticket_id'];
     $found = false;
@@ -28,7 +25,6 @@ if (isset($_POST['ticket_id'])) {
     }
 }
 
-// Pregătim datele biletelor pentru afișare
 $ticketData = [];
 $total = 0;
 foreach ($_SESSION['cart'] as $item) {
