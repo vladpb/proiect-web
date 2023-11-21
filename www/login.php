@@ -1,16 +1,53 @@
 <?php
-include('server.php');
-include('header.php');
+include 'Database.php';
+include 'SessionManager.php';
+include 'UserManager.php';
+include 'header.php';  // Assuming header.php does not require changes
 
-// Check if user is logged in and if user is an admin
-if (isset($_SESSION['username']) && isset($_SESSION['esteAdministrator']) && $_SESSION['esteAdministrator']) {
+$db = new Database();
+$session = new SessionManager();
+$userManager = new UserManager($db);
+
+// Check if user is already logged in
+if ($session->exists('username') && $session->exists('esteAdministrator') && $session->get('esteAdministrator')) {
     header('location: admin_panel.php');
+    exit();
+}
+
+// Handling the login logic
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_user'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Call to UserManager method to handle login
+    $loginStatus = $userManager->loginUser($username, $password);
+
+    if ($loginStatus) {
+        // Set session variables upon successful login
+        $session->set('username', $username);
+        $session->set('esteAdministrator', $loginStatus['is_admin']);
+
+        // Redirect to admin panel if user is an admin
+        if ($loginStatus['is_admin']) {
+            header('location: admin_panel.php');
+            exit();
+        }
+
+        header('location: index.php');
+        exit();
+
+    } else {
+        // Handle login errors
+        // Assuming errors are returned as an array
+        $errors = $loginStatus['errors'];
+    }
+
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registration system PHP and MySQL</title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -19,7 +56,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['esteAdministrator']) && $_S
 </div>
 
 <form method="post" action="login.php">
-    <?php include('errors.php'); ?>
+    <?php include('errors.php');?>
     <div class="input-group">
         <label>Username</label>
         <input type="text" name="username" >

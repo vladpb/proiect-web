@@ -1,33 +1,42 @@
 <?php
-include('server.php');
-include('header.php');
+include 'Database.php';
+include 'SessionManager.php';
+include 'header.php';
+$db = new Database();
+$session = new SessionManager();
 
 
-if (!isset($_SESSION['username']) || $_SESSION['esteAdministrator'] != 1) {
-    $_SESSION['msg'] = "Trebuie sa fii logat ca administrator";
+if (!$session->exists('username') || $session->get('esteAdministrator') != 1) {
+    $session->set('msg', "Trebuie sa fii logat ca administrator");
     header('location: login.php');
     exit;
 }
 
-
 // Fetch data for display
-$events = mysqli_query($db, "SELECT * FROM evenimente");
-$speakeri = mysqli_query($db, "SELECT * FROM speakeri");
-$parteneri = mysqli_query($db, "SELECT * FROM parteneri");
-$activitati = mysqli_query($db, "SELECT * FROM agenda");
+$eventsQuery = "SELECT * FROM evenimente";
+$events = $db->query($eventsQuery);
 
+$speakerQuery = "SELECT * FROM speakeri";
+$speakeri = $db->query($speakerQuery);
+
+$partnerQuery = "SELECT * FROM parteneri";
+$parteneri = $db->query($partnerQuery);
+
+$activityQuery = "SELECT * FROM agenda";
+$activitati = $db->query($activityQuery);
+
+// Function to fetch partners for an activity
 function fetchPartnersForActivity($db, $activitate_id) {
     $query = "SELECT p.nume FROM parteneri p
               INNER JOIN parteneri_activitati pa ON p.id = pa.partener_id
               WHERE pa.activitate_id = $activitate_id";
-    $result = mysqli_query($db, $query);
+    $result = $db->query($query);
     $partners = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $partners[] = $row['nume'];
     }
     return implode(', ', $partners);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +65,8 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <?php endif ?>
 
     <!-- logged in admin information -->
-    <?php if (isset($_SESSION['username'])) : ?>
-        <p>Bun venit, <strong><?php echo $_SESSION['username']; ?></strong></p>
+    <?php if ($session->exists('username')) : ?>
+        <p>Bun venit, <strong><?php echo htmlspecialchars($session->get('username'));?></strong></p>
         <p><a href="admin_panel.php?logout='1'" style="color: red;">Log out</a></p>
     <?php endif ?>
 
