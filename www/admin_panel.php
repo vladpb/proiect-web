@@ -15,18 +15,6 @@ $speakeri = mysqli_query($db, "SELECT * FROM speakeri");
 $parteneri = mysqli_query($db, "SELECT * FROM parteneri");
 $activitati = mysqli_query($db, "SELECT * FROM agenda");
 
-function fetchPartnersForActivity($db, $activitate_id) {
-    $query = "SELECT p.nume FROM parteneri p
-              INNER JOIN parteneri_activitati pa ON p.id = pa.partener_id
-              WHERE pa.activitate_id = $activitate_id";
-    $result = mysqli_query($db, $query);
-    $partners = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $partners[] = $row['nume'];
-    }
-    return implode(', ', $partners);
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -142,7 +130,7 @@ function fetchPartnersForActivity($db, $activitate_id) {
 </form>
 
 <table>
-    <h2 class="header">Speakeri</h2>
+    <h2 class="header section1">Speakeri</h2>
     <thead>
     <tr>
         <th>Nume</th>
@@ -162,17 +150,17 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<h2 class="header">Adaugă speaker</h2>
+<h2 class="header section1">Adaugă speaker</h2>
 <form method="post" action="admin_panel.php">
     <label>Nume:</label>
     <input type="text" name="nume" required><br>
     <label>Descriere:</label>
     <input type="text" name="descriere" required><br>
-    <button class="btn" style="width: 30%" type="submit" name="adauga_speaker">Adaugă</button>
+    <button class="btn section1" style="width: 30%" type="submit" name="adauga_speaker">Adaugă</button>
 </form>
 
 <table>
-    <h2 class="header">Parteneri</h2>
+    <h2 class="header section2">Parteneri</h2>
     <thead>
     <tr>
         <th>Nume</th>
@@ -192,7 +180,7 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<h2 class="header">Adaugă partener</h2>
+<h2 class="header section2">Adaugă partener</h2>
 <form method="post" action="admin_panel.php">
 
     <label>Nume:</label>
@@ -201,11 +189,11 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <label>Descriere:</label>
     <input type="text" name="descriere" required><br>
 
-    <button class="btn" style="width: 30%" type="submit" name="adauga_partener">Adaugă</button>
+    <button class="btn section2" style="width: 30%" type="submit" name="adauga_partener">Adaugă</button>
 </form>
 
 <table>
-    <h2 class="header">Activitati</h2>
+    <h2 class="header section3">Activitati</h2>
     <thead>
     <tr>
         <th>Nume</th>
@@ -244,7 +232,7 @@ function fetchPartnersForActivity($db, $activitate_id) {
     </tbody>
 </table>
 
-<h2 class="header">Adaugă Activitate în Eveniment</h2>
+<h2 class="header section3">Adaugă Activitate în Eveniment</h2>
 <form method="post" action="admin_panel.php">
 
     <label>Eveniment:</label>
@@ -272,20 +260,17 @@ function fetchPartnersForActivity($db, $activitate_id) {
     <label>Ora de Final:
         <input type="time" name="ora_final_activitate" required><br>
     </label>
-    <label>Parteneri:</label>
-    <select name="parteneri_activitate[]" multiple>
-        <?php
-        // Obțineți lista de parteneri din baza de date
-        $partenerQuery = "SELECT id, nume FROM parteneri";
-        $partenerResult = mysqli_query($db, $partenerQuery);
-
-        // Afișează fiecare partener ca o opțiune în meniul derulant
-        while ($partener = mysqli_fetch_assoc($partenerResult)) {
-            echo "<option value='" . $partener['id'] . "'>" . htmlspecialchars($partener['nume']) . "</option>";
-        }
-        ?>
-    </select><br>
-    <button class="btn" style="width: 30%" type="submit" name="adauga_activitate">Adaugă Activitate</button>
+    <label>Partener:</label>
+    <select name="partener_id" required>
+    <?php
+    $partenerQuery = "SELECT id, nume FROM parteneri";
+    $partenerResult = mysqli_query($db, $partenerQuery);
+    while ($partener = mysqli_fetch_assoc($partenerResult)) {
+        echo "<option value='" . $partener['id'] . "'>" . htmlspecialchars($partener['nume']) . "</option>";
+    }
+    ?>
+</select><br>
+    <button class="btn section3" style="width: 30%" type="submit" name="adauga_activitate">Adaugă Activitate</button>
 </form>
 
 

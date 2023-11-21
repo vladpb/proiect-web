@@ -17,6 +17,44 @@ body {
     background-repeat: no-repeat;
 }
 
+form {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+form label {
+    font-size: 20px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    display: block;
+}
+
+form input, form textarea, form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 16px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #2C3E50;
+    border: none;
+    cursor: pointer;
+    color: white;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: #34495e;
+}
 
 .header, form, .content, table {
     width: 70%;
@@ -162,4 +200,16 @@ body {
     background: #f9f9f9;
     box-shadow: none;
     border-radius: 0px;
+}
+
+.section1 {
+    background-color: #49a09d;
+}
+
+.section2 {
+    background-color: #4960a0;
+}
+
+.section3 {
+    background-color: #723b97;
 }

@@ -142,18 +142,20 @@ if (isset($_POST['adauga_activitate'])) {
     $ora_start_activitate = mysqli_real_escape_string($db, $_POST['ora_start_activitate']);
     $ora_final_activitate = mysqli_real_escape_string($db, $_POST['ora_final_activitate']);
     $parteneri_activitate = isset($_POST['parteneri_activitate']) ? $_POST['parteneri_activitate'] : array();
+    $partener_id = mysqli_real_escape_string($db, $_POST['partener_id']);
 
     $query_eveniment = "SELECT titlu FROM evenimente WHERE id = $eveniment_id";
     $result_eveniment = mysqli_query($db, $query_eveniment);
     $eveniment_info = mysqli_fetch_assoc($result_eveniment);
 
+
     if ($eveniment_info) {
         $titlu_eveniment = $eveniment_info['titlu'];
 
-        $query_insert_activitate = "INSERT INTO agenda (titlu_activitate, descriere, ora_start, ora_final, eveniment_id) 
-                                    VALUES ('$titlu_eveniment', '$descriere_activitate', '$ora_start_activitate', '$ora_final_activitate', $eveniment_id)";
+        $query_insert_activitate = "INSERT INTO agenda (titlu_activitate, descriere, ora_start, ora_final, eveniment_id, partener_id) 
+                                    VALUES ('$titlu_eveniment', '$descriere_activitate', '$ora_start_activitate', '$ora_final_activitate', '$eveniment_id', '$partener_id')";
         mysqli_query($db, $query_insert_activitate);
-        $activitate_id = mysqli_insert_id($db); // ID-ul activității recent adăugate
+        $activitate_id = mysqli_insert_id($db);
 
         foreach ($parteneri_activitate as $partener_id) {
             $query_insert_partener_activitate = "INSERT INTO parteneri_activitati (partener_id, activitate_id) 

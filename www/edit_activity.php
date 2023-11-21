@@ -37,8 +37,10 @@ if (isset($_POST['update_activitate'])) {
     $descriere = mysqli_real_escape_string($db, $_POST['descriere']);
     $ora_start = mysqli_real_escape_string($db, $_POST['ora_start']);
     $ora_final = mysqli_real_escape_string($db, $_POST['ora_final']);
+    $partener_id = mysqli_real_escape_string($db, $_POST['partener_id']);
 
-    $query = "UPDATE agenda SET titlu_activitate='$titlu_activitate', descriere='$descriere', ora_start='$ora_start', ora_final='$ora_final' WHERE id='$id'";
+
+    $query = "UPDATE agenda SET titlu_activitate='$titlu_activitate', descriere='$descriere', ora_start='$ora_start', ora_final='$ora_final', partener_id='$partener_id' WHERE id='$id'";
     mysqli_query($db, $query);
 
     $submittedPartners = isset($_POST['parteneri']) ? $_POST['parteneri'] : [];
@@ -94,20 +96,19 @@ if (isset($_POST['update_activitate'])) {
         <input type="time" name="ora_final" value="<?php echo $activitate['ora_final']; ?>">
     </div>
     <div class="input-group">
-        <label>Parteneri:</label>
-        <select name="parteneri[]" multiple>
-            <?php
-            $queryParteneri = "SELECT * FROM parteneri";
-            $resultParteneri = mysqli_query($db, $queryParteneri);
+    <label>Partener:</label>
+    <select name="partener_id" required>
+        <?php
+        $partenerQuery = "SELECT id, nume FROM parteneri";
+        $partenerResult = mysqli_query($db, $partenerQuery);
 
-            while ($partener = mysqli_fetch_assoc($resultParteneri)) {
-                $selected = in_array($partener['id'], $currentPartners) ? ' selected' : '';
-                echo '<option value="' . $partener['id'] . '"' . $selected . '>' . $partener['nume'] . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <div class="input-group">
+        while ($partener = mysqli_fetch_assoc($partenerResult)) {
+            $selected = ($partener['id'] == $activitate['partener_id']) ? "selected" : "";
+            echo "<option value='" . $partener['id'] . "' $selected>" . htmlspecialchars($partener['nume']) . "</option>";
+        }
+        ?>
+    </select>
+</div>    <div class="input-group">
         <button type="submit" class="btn" name="update_activitate">Salvează modificările</button>
     </div>
 </form>
