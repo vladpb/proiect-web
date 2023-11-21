@@ -200,7 +200,7 @@ $activitati = mysqli_query($db, "SELECT * FROM agenda");
         <th>Descriere</th>
         <th>Ora de Start</th>
         <th>Ora de Final</th>
-        <th>Parteneri</th>
+<!--        <th>Parteneri</th>-->
         <th>Acțiuni</th>
     </tr>
     </thead>
@@ -211,20 +211,20 @@ $activitati = mysqli_query($db, "SELECT * FROM agenda");
             <td><?php echo htmlspecialchars($activitate['descriere']); ?></td>
             <td><?php echo htmlspecialchars($activitate['ora_start']); ?></td>
             <td><?php echo htmlspecialchars($activitate['ora_final']); ?></td>
-            <td>
-                <?php
-                $query_parteneri_activitate = "SELECT p.nume FROM parteneri p
-                                    INNER JOIN parteneri_activitati ep ON p.id = ep.partener_id
-                                    INNER JOIN agenda a ON ep.eveniment_id = a.eveniment_id
-                                    WHERE a.id = " . $activitate['id'];
-
-                $result_parteneri_activitate = mysqli_query($db, $query_parteneri_activitate);
-
-                while ($partener_activitate = mysqli_fetch_assoc($result_parteneri_activitate)) {
-                    echo htmlspecialchars($partener_activitate['nume']) . '<br>';
-                }
-                ?>
-            </td>
+<!--            <td>-->
+<!--                --><?php
+//                $query_parteneri_activitate = "SELECT p.nume FROM parteneri p
+//                                    INNER JOIN parteneri_activitati ep ON p.id = ep.partener_id
+//                                    INNER JOIN agenda a ON ep.eveniment_id = a.eveniment_id
+//                                    WHERE a.id = " . $activitate['id'];
+//
+//                $result_parteneri_activitate = mysqli_query($db, $query_parteneri_activitate);
+//
+//                while ($partener_activitate = mysqli_fetch_assoc($result_parteneri_activitate)) {
+//                    echo htmlspecialchars($partener_activitate['nume']) . '<br>';
+//                }
+//                ?>
+<!--            </td>-->
             <td><a href="edit_activity.php?id=<?php echo $activitate['id']; ?>">Edit</a></td>
             <td><a href="delete_activity.php?id=<?php echo $activitate['id']; ?>">Sterge</a></td>
         </tr>
