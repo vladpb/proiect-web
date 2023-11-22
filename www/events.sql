@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 20, 2023 at 09:55 PM
+-- Generation Time: Nov 22, 2023 at 02:27 PM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -35,18 +35,18 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   `ora_start` time DEFAULT NULL,
   `ora_final` time DEFAULT NULL,
   `eveniment_id` int DEFAULT NULL,
+  `partener_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `eveniment_id` (`eveniment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `agenda`
 --
 
-INSERT INTO `agenda` (`id`, `titlu_activitate`, `descriere`, `ora_start`, `ora_final`, `eveniment_id`) VALUES
-(1, 'Concert Ian', 'rev', '00:34:00', '02:13:00', 4),
-(5, 'Concert Ian', 'aersares', '14:34:00', '14:34:00', 4),
-(6, 'Concert Ian', 'w12', '14:12:00', '03:21:00', 4);
+INSERT INTO `agenda` (`id`, `titlu_activitate`, `descriere`, `ora_start`, `ora_final`, `eveniment_id`, `partener_id`) VALUES
+(14, 'Conferința Internațională de Inovare în Tehnologie 2023', 'Networking și sesiuni de întrebări și răspunsuri cu experți în tehnologie', '00:00:00', '14:00:00', 8, 4),
+(15, 'Conferința Internațională de Inovare în Tehnologie 2023', 'Concurs de idei de start-up, cu premii pentru cele mai promițătoare proiecte', '20:00:00', '22:00:00', 8, 3);
 
 -- --------------------------------------------------------
 
@@ -85,17 +85,16 @@ CREATE TABLE IF NOT EXISTS `evenimente` (
   PRIMARY KEY (`id`),
   KEY `creat_de` (`creat_de`),
   KEY `speaker_id` (`speaker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `evenimente`
 --
 
 INSERT INTO `evenimente` (`id`, `titlu`, `descriere`, `data`, `ora`, `locatie`, `creat_de`, `speaker_id`, `mail`, `pret_bilet`) VALUES
-(4, 'Concert Ian', 'concert fortza rau', '2015-02-01', '00:39:00', 'form', 2, 1, 'ian@ocult.com', '10.00'),
-(5, 'Concert Azteca', 'concert tare rau jur', '2020-11-23', '03:06:00', 'Euphoria', 2, 2, '', NULL),
-(6, 'Concert Ian si Azteca', 'esti nebun s au impacat', '3000-02-02', '06:06:00', 'Cluj Arena', 2, 1, '', '69.00'),
-(7, 'asdasdad', 'oasfjoisjfisdajf', '2023-11-28', '15:35:00', 'arges', 2, 1, NULL, NULL);
+(8, 'Conferința Internațională de Inovare în Tehnologie 2023', 'Eveniment de prestigiu, reunind experți și pasionați din lumea tehnologiei pentru a explora cele mai recente inovații în AI, securitate cibernetică și dezvoltare sustenabilă.', '2023-04-12', '14:00:00', 'Universitatea Tehnica', 2, 3, 'organizare@techconf23.org', '10.00'),
+(9, 'Summitul Global al Liderilor în Energie Regenerabilă 2024', 'Un eveniment cheie pentru liderii industriei de energie regenerabilă, axat pe ultimele tendințe și inovații în energie solară, eoliană și hidroelectrică.', '2024-03-02', '16:00:00', 'Cluj Innovation Park', 2, 6, 'energie@summitglobal.com', '5.00'),
+(10, 'Forumul Anual de Marketing Digital și Inovație 2023', 'O platformă pentru profesioniștii în marketing digital, concentrându-se pe strategii inovatoare, optimizarea SEO și noile abordări în publicitatea online.', '2023-11-28', '18:00:00', 'FSEGA', 2, 5, 'contact@mkforum23.com', '5.00');
 
 -- --------------------------------------------------------
 
@@ -110,15 +109,16 @@ CREATE TABLE IF NOT EXISTS `parteneri` (
   `descriere` text,
   `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `parteneri`
 --
 
 INSERT INTO `parteneri` (`id`, `nume`, `descriere`, `logo`) VALUES
-(1, 'fwwe', 'dqwdq', NULL),
-(2, 'asdfg', 'zxcv', NULL);
+(3, 'Asociația Dezvoltatorilor de Software', 'Asociația Dezvoltatorilor de Software', NULL),
+(4, 'Centrul pentru Inovare și Tehnologie', 'Centrul pentru Inovare și Tehnologie', NULL),
+(5, 'Universitatea Babes-Bolyai', 'Universitatea Babes-Bolyai', NULL);
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,14 @@ CREATE TABLE IF NOT EXISTS `parteneri_activitati` (
   PRIMARY KEY (`id`),
   KEY `eveniment_id` (`eveniment_id`),
   KEY `partener_id` (`partener_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `parteneri_activitati`
+--
+
+INSERT INTO `parteneri_activitati` (`id`, `eveniment_id`, `partener_id`) VALUES
+(19, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -148,15 +155,17 @@ CREATE TABLE IF NOT EXISTS `speakeri` (
   `nume` varchar(255) NOT NULL,
   `descriere` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `speakeri`
 --
 
 INSERT INTO `speakeri` (`id`, `nume`, `descriere`) VALUES
-(1, 'awfwsf', 'afef'),
-(2, 'asdgfd', 'dsfaasdf');
+(3, 'Dr. Ana Popescu', 'Expert în inteligență artificială, Universitatea Politehnică'),
+(4, 'Ing. Mihai Ionescu', 'CEO al Michaelsoft, pionier în software'),
+(5, 'Dr. Laura Vasilescu', 'Specialist în marketing si SEO'),
+(6, 'Dr. Albert Anghelescu', 'Biolog si specialist in prezervarea naturii');
 
 -- --------------------------------------------------------
 
@@ -174,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `utilizatori` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `utilizatori`
@@ -182,7 +191,8 @@ CREATE TABLE IF NOT EXISTS `utilizatori` (
 
 INSERT INTO `utilizatori` (`id`, `username`, `email`, `parola`, `esteAdministrator`) VALUES
 (1, 'a', 'a@b.c', '900150983cd24fb0d6963f7d28e17f72', 1),
-(2, 'bbb', 'b@b.b', '08f8e0260c64418510cefb2b06eee5cd', 1);
+(2, 'bbb', 'b@b.b', '08f8e0260c64418510cefb2b06eee5cd', 1),
+(3, 'ccc', 'c@c.c', '9df62e693988eb4e1e1444ece0578579', 0);
 
 --
 -- Constraints for dumped tables

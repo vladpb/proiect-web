@@ -32,7 +32,7 @@ if (isset($_POST['reg_user'])) {
     }
 
     if (count($errors) == 0) {
-        $password = md5($password_1); // encrypt the password before saving in the database
+        $password = md5($password_1);
         $query = "INSERT INTO utilizatori (username, email, parola) VALUES('$username', '$email', '$password')";
         if (mysqli_query($db, $query)) {
             $_SESSION['username'] = $username;
@@ -60,7 +60,7 @@ if (isset($_POST['login_user'])) {
         $results = mysqli_query($db, $query);
 
         if (mysqli_num_rows($results) == 1) {
-            $user = mysqli_fetch_assoc($results); // obținem informațiile despre utilizator
+            $user = mysqli_fetch_assoc($results);
             $_SESSION['username'] = $username;
             $_SESSION['esteAdministrator'] = $user['esteAdministrator'];
 
