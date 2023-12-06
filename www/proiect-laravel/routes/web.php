@@ -19,3 +19,13 @@ Route::get('about', [WelcomeController::class, 'about']);
 Route::get('contactp', [WelcomeController::class, 'contactp']);
 Route::get('despre', [WelcomeController::class,'despre']);
 Route::get('despresir', [WelcomeController::class,'despresir']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::get('/dashboard', function() {
+        // Logica panoului de control
+    });
+});
